@@ -32,14 +32,17 @@ async def cmd_login(message: types.Message):
 
 @dp.message_handler(state=ClientStatesGroup.login)
 async def login(message: types.Message, state: FSMContext):
+    #Делим сообщение пользователя на строки и заносим их в локальные переменные {login} и {password}
     login = message.text.split('\n')[0]
     password = message.text.split('\n')[1]
 
+    #Переход в директорию для импорта нашегго модуля
     sys.path.insert(0, "C:/Users/user/MyProjects/MyPythonProjects/Edu Tatar/script")
 
     import script_login
     res = script_login.login(login, password)
     
+    #Если получится зайти на сайт с такими данные для входа, то мы сообщим об этом пользователю
     if res[0] == 'true':
         user_name = res[1][0]
         user_login = res[1][1]
@@ -48,5 +51,6 @@ async def login(message: types.Message, state: FSMContext):
     elif res[0] == 'false':
         await bot.send_message(message.from_user.id, 'Не удалось выполнить вход!\nНеправильный Логин или пароль')
         await state.finish()
+        
 if __name__ == "__main__":
     executor.start_polling(dp, skip_updates=True)
