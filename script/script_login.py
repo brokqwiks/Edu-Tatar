@@ -1,8 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
-from aiogram import types
+import selenium
 
-def login(message: types.Message):
+def login(login, password):
     #Вход на сайт Edu Tatar
     url_login = "https://edu.tatar.ru/logon"
     user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36"
@@ -15,8 +15,8 @@ def login(message: types.Message):
 
     #Получаем данные для входа от пользователя
     data = {
-        'main_login2' : message.text,
-        'main_password2' : message.text
+        'main_login2' : login,
+        'main_password2' : password
     }
     #Делаем пост запрос на сайт
     post_requests = session.post(url_login,
@@ -29,10 +29,9 @@ def login(message: types.Message):
         info_table = bs_responce.find_all('td')
         user_name = info_table[1].text
         user_login = info_table[3].text
-        user_job = info_table[5].text3
-
+        user_job = info_table[5].text
         user_info = [user_name, user_login, user_job]
-
-        return user_info
+        return ['true', user_info, session, user_agent]
     except:
-        return False
+        return ['false']
+    
