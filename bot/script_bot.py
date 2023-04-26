@@ -32,22 +32,22 @@ async def cmd_login(message: types.Message):
 @dp.message_handler(state=ClientStatesGroup.LoginEduTatar)
 async def login(message: types.Message, state: FSMContext):
     #Делим сообщение пользователя на строки и заносим их в локальные переменные {login} и {password}
-    login = message.text.split('\n')[0]
-    password = message.text.split('\n')[1]
+    LoginFromMessage = message.text.split('\n')[0]
+    PasswordFromMessage = message.text.split('\n')[1]
 
-    #Переход в директорию для импорта нашегго модуля
+    #Переход в директорию для импорта нашего модуля
     sys.path.insert(0, "C:/Users/user/MyProjects/MyPythonProjects/Edu Tatar/script")
 
     import script_login
-    res = script_login.loginEduTatar(login, password)
+    LoginEduTatar = script_login.loginEduTatar(login, password)
     
     #Если получится зайти на сайт с такими данные для входа, то мы сообщим об этом пользователю
-    if res[0] == 'true':
-        user_name = res[1][0]
-        user_login = res[1][1]
-        await bot.send_message(message.from_user.id, f'Успешная авторизация!\nЛогин: {user_login}\nФИО: {user_name}')
+    if LoginEduTatar[0] == 'true':
+        UserNameFromScript = LoginEduTatar[1][0]
+        UserLoginFromScript = LoginEduTatar[1][1]
+        await bot.send_message(message.from_user.id, f'Успешная авторизация!\nЛогин: {UserLoginFromScript}\nФИО: {UserNameFromScript}')
         await state.finish()
-    elif res[0] == 'false':
+    elif LoginEduTatar[0] == 'false':
         await bot.send_message(message.from_user.id, 'Не удалось выполнить вход!\nНеправильный Логин или пароль')
         await state.finish()
         
