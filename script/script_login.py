@@ -2,36 +2,36 @@ import requests
 from bs4 import BeautifulSoup
 import selenium
 
-def login(login, password):
+def loginEduTatar(LoginFromMessage, PasswordFromMessage):
     #Вход на сайт Edu Tatar
-    url_login = "https://edu.tatar.ru/logon"
+    UrlLogin_EduTatar = "https://edu.tatar.ru/logon"
     user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36"
     session = requests.Session()
-    r = session.get(url_login, headers={
+    responce = session.get(UrlLogin_EduTatar, headers={
         'User-Agent' : user_agent
     })
-    session.headers.update({'Referer':url_login})
+    session.headers.update({'Referer':UrlLogin_EduTatar})
     session.headers.update({'User-Agent':user_agent})
 
     #Получаем данные для входа от пользователя
     data = {
-        'main_login2' : login,
-        'main_password2' : password
+        'main_login2' : LoginFromMessage,
+        'main_password2' : PasswordFromMessage
     }
     #Делаем пост запрос на сайт
-    post_requests = session.post(url_login,
+    post_requests = session.post(UrlLogin_EduTatar,
                                  data)
 
     #Сработает исключение при неправильных данных
     try:
         #Получаем информацию(Имя, логин, должность) с сайта после успешной авторизации
-        bs_responce = BeautifulSoup(post_requests.text, "lxml")
-        info_table = bs_responce.find_all('td')
-        user_name = info_table[1].text
-        user_login = info_table[3].text
-        user_job = info_table[5].text
-        user_info = [user_name, user_login, user_job]
-        return ['true', user_info, session, user_agent]
+        BS_User_Anceta = BeautifulSoup(post_requests.text, "lxml")
+        UserInfoFromAnceta = BS_User_Anceta.find_all('td')
+        UserNameFromAnceta = UserInfoFromAnceta[1].text
+        UserLoginFromAnceta = UserInfoFromAnceta[3].text
+        UserJobFromAnceta = UserInfoFromAnceta[5].text
+        UserInfoList_FromAnceta = [UserNameFromAnceta, UserLoginFromAnceta, UserJobFromAnceta]
+        return ['true', UserInfoList_FromAnceta, session, user_agent]
     except:
         return ['false']
     
