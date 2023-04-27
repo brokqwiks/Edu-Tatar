@@ -39,7 +39,7 @@ async def login(message: types.Message, state: FSMContext):
     sys.path.insert(0, "C:/Users/user/MyProjects/MyPythonProjects/Edu Tatar/script")
 
     import script_login
-    LoginEduTatar = script_login.loginEduTatar(login, password)
+    LoginEduTatar = script_login.loginEduTatar(LoginFromMessage, PasswordFromMessage)
     
     #Если получится зайти на сайт с такими данные для входа, то мы сообщим об этом пользователю
     if LoginEduTatar[0] == 'true':
