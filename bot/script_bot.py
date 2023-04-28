@@ -39,13 +39,14 @@ async def login(message: types.Message, state: FSMContext):
     sys.path.insert(0, "C:/Users/user/MyProjects/MyPythonProjects/Edu Tatar/script")
 
     import script_login
-    LoginEduTatar = script_login.loginEduTatar(login, password)
+    LoginEduTatar = script_login.loginEduTatar(LoginFromMessage, PasswordFromMessage)
     
     #Если получится зайти на сайт с такими данные для входа, то мы сообщим об этом пользователю
     if LoginEduTatar[0] == 'true':
         UserNameFromScript = LoginEduTatar[1][0]
         UserLoginFromScript = LoginEduTatar[1][1]
         await bot.send_message(message.from_user.id, f'Успешная авторизация!\nЛогин: {UserLoginFromScript}\nФИО: {UserNameFromScript}')
+        print(LoginEduTatar[4])
         await state.finish()
     elif LoginEduTatar[0] == 'false':
         await bot.send_message(message.from_user.id, 'Не удалось выполнить вход!\nНеправильный Логин или пароль')
