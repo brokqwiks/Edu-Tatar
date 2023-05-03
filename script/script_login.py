@@ -31,11 +31,18 @@ def loginEduTatar(LoginFromMessage, PasswordFromMessage):
     UserJobFromAnceta = UserInfoFromAnceta[5].text
     UserInfoList_FromAnceta = [UserNameFromAnceta, UserLoginFromAnceta, UserJobFromAnceta]
 
+
+
+        
+    return ['true', UserInfoList_FromAnceta, session, user_agent,  LoginFromMessage, PasswordFromMessage]
+
+def diary(LoginFromMessage, PasswordFromMessage):
+    LoginEduTatar = loginEduTatar(LoginFromMessage, PasswordFromMessage)
+    session = LoginEduTatar[2]
     Url_UserDiaryTerm = "https://edu.tatar.ru/user/diary/term"
     responce_diaryTerm = session.get(url=Url_UserDiaryTerm)
 
     BS_User_Diary_Term = BeautifulSoup(responce_diaryTerm.text, 'lxml')
-    test = BS_User_Diary_Term.find_all('tr')
 
     #обрабатываю html страницу    
     contrainer = BS_User_Diary_Term.find_all("tr")
@@ -48,7 +55,9 @@ def loginEduTatar(LoginFromMessage, PasswordFromMessage):
     #не обработанные оценки и предметы в списке
     DataSubjectsList = data_list
     DataSubjectsList.pop(0)
-    SubjectsAndRatings = []
+    SubjectsAndRatings_List = []
+    SubjectsAndRatings_Dict = {}
+    Ratings = []
     test1 = []
     items = []
     
@@ -60,18 +69,20 @@ def loginEduTatar(LoginFromMessage, PasswordFromMessage):
     
     #Добавляем название предмета и оценки [[name, ''] [name, '']]
     for subject in items:
-        SubjectsAndRatings.append([subject[1]])
+        SubjectsAndRatings_List.append([subject[1]])
         nameSubject = subject[1]
         for rating in subject:
             if len(rating) == 1 or len(rating) == 4:
-                for i in SubjectsAndRatings:
+                for i in SubjectsAndRatings_List:
                     for name in i:
                         if nameSubject == name:
                             i.append(rating)
 
-    #Добавляем пункт ИТОГО в список
-    generalAllSubjectList = len(SubjectsAndRatings) - 1
+    generalAllSubjectList = len(SubjectsAndRatings_List) - 1
     generalAllSubject = items[generalAllSubjectList][0].split('ИТОГО')[1]
-    SubjectsAndRatings.append([generalAllSubject])
+    SubjectsAndRatings_List.append([generalAllSubject])
 
-    return ['true', UserInfoList_FromAnceta, session, user_agent, SubjectsAndRatings, LoginFromMessage, PasswordFromMessage]
+    r = requests.post(url=Url_UserDiaryTerm, headers={'Connection':'close'})
+
+    return [SubjectsAndRatings_List]
+
