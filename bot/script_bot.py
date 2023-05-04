@@ -28,7 +28,8 @@ LoginKeyboard.add(DiaryEduTatar_Button).insert(CancelEduTatar_Button)
 
 @dp.message_handler(commands=['start'])
 async def cmd_start(message: types.Message):
-    await bot.send_message(message.from_user.id, 'Привет! Этот бот - электронный дневник EduTatar.\nЧтобы посмотреть, что умеет этот бот войди в свой аккаунт')
+    await bot.send_message(message.from_user.id, 'Привет! Этот бот - электронный дневник EduTatar.\nЧтобы посмотреть, что умеет этот бот войди в свой аккаунт',
+                           reply_markup=StartKeyboard)
 
 @dp.message_handler(Text(equals='Войти'))
 async def cmd_sing_in(message: types.Message):
@@ -46,7 +47,8 @@ async def LoginEduTatar(message: types.Message, state: FSMContext):
     LoginEduTatar = script_login.loginEduTatar(LoginFromMessage, PasswordFromMessge)
     
     if LoginEduTatar[0] == 'true':
-        await bot.send_message(message.from_user.id, f'Успешная авторизация!\nЛогин: {LoginEduTatar[1][1]}\nФИО: {LoginEduTatar[1][0]}')
+        await bot.send_message(message.from_user.id, f'Успешная авторизация!\nЛогин: {LoginEduTatar[1][1]}\nФИО: {LoginEduTatar[1][0]}',
+                               LoginEduTatar)
         await state.finish()
         await ClientStatesGroup.DiaryEduTatar.set()
 
@@ -57,7 +59,8 @@ async def LoginEduTatar(message: types.Message, state: FSMContext):
                 print(DiaryEduTatar[0])
                 await state.finish()
             elif message.text == 'Выйти':
-                await bot.send_message(message.from_user.id, 'Вы успешно вышли с аккаунта')
+                await bot.send_message(message.from_user.id, 'Вы успешно вышли с аккаунта',
+                                       reply_markup=StartKeyboard)
                 await state.finish()
         
 if __name__ == "__main__":
