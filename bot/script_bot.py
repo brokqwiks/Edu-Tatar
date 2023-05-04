@@ -48,7 +48,7 @@ async def LoginEduTatar(message: types.Message, state: FSMContext):
     
     if LoginEduTatar[0] == 'true':
         await bot.send_message(message.from_user.id, f'Успешная авторизация!\nЛогин: {LoginEduTatar[1][1]}\nФИО: {LoginEduTatar[1][0]}',
-                               LoginEduTatar)
+                               reply_markup=LoginEduTatar)
         await state.finish()
         await ClientStatesGroup.DiaryEduTatar.set()
 
