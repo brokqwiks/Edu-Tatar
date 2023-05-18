@@ -60,7 +60,7 @@ async def login_edutatar(message: types.Message, state: FSMContext):
         if responce[0] == 'true':
 
             #Вывод сообщения об успешной авторизации и данными аккаунта
-            await bot.send_message(message.from_user.id, f"Успешная авторизация!\nЛогин: {responce[1][0]}\nФИО: {responce[1][0]}")
+            await bot.send_message(message.from_user.id, f"Успешная авторизация!\nЛогин: {responce[1][1]}\nФИО: {responce[1][0]}")
 
             #Массив с оценками от парсера
             subjects = responce[4]
