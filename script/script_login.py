@@ -54,7 +54,6 @@ def loginEduTatar(LoginFromMessage, PasswordFromMessage):
         DataSubjectsList = data_list
         DataSubjectsList.pop(0)
         SubjectsAndRatings = []
-        test1 = []
         items = []
 
         #обработка
